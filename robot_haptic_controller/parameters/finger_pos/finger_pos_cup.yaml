@@ -1,0 +1,44 @@
+# Vector of hand joint positions corresponding to open and closed positions.
+hand_pos:
+ init: #does not matter ...
+  j00: 0.0
+  j01: 0.0
+  j02: 0.0
+  j03: 0.0
+
+  j10: 0.0
+  j11: 0.0
+  j12: 0.0
+  j13: 0.0
+
+  j20: 0.0
+  j21: 0.0
+  j22: 0.0
+  j23: 0.0
+
+  j30: 0.0
+  j31: 0.0
+  j32: 0.0
+  j33: 0.0
+
+ final:
+  j00: -15.0
+  j01: 55.0
+  j02: 15.0
+  j03: 15.0
+
+  j10: 0.0
+  j11: 55.0
+  j12: 15.0
+  j13: 15.0
+
+  j20: 15.0
+  j21: 55.0
+  j22: 15.0
+  j23: 15.0
+
+  j30: 90.0
+  j31: 00.0
+  j32: 25.0
+  j33: 15.0
+

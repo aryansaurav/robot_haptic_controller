@@ -1,0 +1,56 @@
+<launch>
+
+  <include file="$(find robot_haptic_controller)/launch/helper/run_with_params.launch" >
+
+    <!-- Run in debug mode  -->
+    <arg name="gdb"             default="false"/>
+
+
+    <!-- Choose to run rviz only with hand or whole robot -->
+    <arg name="rviz_hand"       default="false"/>
+    <arg name="rviz_full"       default="true"/>
+
+
+    <!-- Run the state publisher (useful for saving in rosbags if rviz with state publisher is not run) -->
+    <arg name="state_pub"       default="false"/>
+
+    <!-- Run a terminal that displays the debug information sent through ros topics -->
+    <arg name="display_debug"   default="true"/>
+
+    <!-- Run epfl_right_torque, which allows to control the real allegro hand -->
+    <arg name="hand_controller" default="true"/>
+
+    <!-- Run the space mouse controller  -->
+    <arg name="space_mouse"     default="true"/>
+
+    <!-- Record a rosbag, specify the bag prefix too -->
+    <arg name="record_bag"      default="false"/>
+
+    <!-- Choose which yaml parameter file to load -->
+    <arg name="program_parameters"      default="param_realrobot.yaml"/>
+
+    <!-- Choose some finger rest positions (different for exploration and grasping) -->
+    <arg name="finger_positions"        default="finger_pos_default.yaml"/>
+    
+    <!-- Choose which contact levels (useful for exploration too and choosing whether to use the thumb) -->
+    <arg name="contact_levels"          default="contact_level_thumb_last.yaml"/>
+
+    <arg name="bag_prefix"              default="spheres"/>
+
+    <arg name="robot_simulator"     default="false"/>
+    <arg name="lwr_main"            default="true"/>
+    <arg name="lwr_main_no"         default="false"/>
+
+    <!-- Python Console NEWNEW-->
+    <arg name="python_console"      default="true"/>
+
+    <!-- Python Console NEWNEW-->
+    <arg name="dyn_param"      default="true"/>
+
+    <!-- Haptic filter -->
+    <arg name="pcl_filter"  default="true"/>
+
+
+</include>
+
+</launch>

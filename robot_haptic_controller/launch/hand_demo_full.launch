@@ -1,0 +1,10 @@
+<launch>
+
+
+  <include file="$(find robot_haptic_controller)/launch/hand_only_demo.launch"/>
+  <!-- include file="$(find epfl_allegro_launchers)/launch/epfl_right_torque.launch"/ -->
+  <!-- include file="$(find pocketsphinx)/launch/allegro_control.launch"/ -->
+  <node pkg="robot_haptic_controller" type="grasp_sender_emg.py" name="robot_talker_audio"/>
+  <node pkg="robot_haptic_controller" type="gui.py" name="gui"/>
+
+</launch>

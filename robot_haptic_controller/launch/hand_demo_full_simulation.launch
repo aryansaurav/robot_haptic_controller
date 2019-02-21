@@ -1,0 +1,15 @@
+<launch>
+
+  <arg name="jsp"         default="false"/>
+
+  <include file="$(find robot_haptic_controller)/launch/hand_only_demo_simulation_objects.launch"/>
+  <node pkg="robot_haptic_controller" type="grasp_sender_emg.py" name="robot_talker_audio"/>
+
+  <node pkg="robot_haptic_controller" type="gui.py" name="gui"/>
+  <!-- only use the joint state publisher if not getting data from EMG -->
+  <node if="$(arg jsp)" pkg="joint_state_publisher" type="joint_state_publisher" name="jsp" args="_use_gui:=1">
+    <remap from="robot_description" to="/allegroHand_1/robot_description"/>
+    <remap from="joint_states" to="desired_hand_state"/>
+  </node>
+
+</launch>

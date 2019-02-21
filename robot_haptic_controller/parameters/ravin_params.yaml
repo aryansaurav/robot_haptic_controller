@@ -1,0 +1,35 @@
+---
+
+# During closing, keep all fingers parrallel
+b_ravin_parrallel_closing: true
+# Fix cartesian orientation with parrallel direction
+b_ravin_use_orientation_for_vc: false
+# Allow switch to tighten phase
+b_ravin_allow_tighten_switch: true 
+# Auto Switch to Close mode
+b_ravin_auto_close_switch: false
+b_ravin_bypass_hand_error_check_reach: false # New: auto pass hand position check for transition to grasp mode
+# Time before allowed switching to closing (ravin) 
+d_ravin_min_time_for_reach_finished: 0.5 #3.0 # 1.0   
+d_ravin_hand_error_norm_threshold_reach: 0.25  # threshold for switching to closing, for fingers
+d_ravin_hand_velocity_threshold_reach: 4.0  # Velocity filter 
+d_ravin_time_auto_mini_tighten_switch: 10.5 #0.5 # Time before auto switch to grasp mode (from close)
+d_ravin_max_time_unscrewing: 35.0 # Time for task execution, stops afterwards
+d_ravin_joint_limit_threshold_unscrewing: 2.0 # Threshold for joint limit
+d_ravin_finger_o_stiffness: 0.001
+# d_ravin_patch_pressure_mutliplier: 5.0   # multiplier for apatch pressure
+# d_ravin_patch_pressure_mutliplier: 3.0 #2.0   # multiplier for patch pressure
+d_ravin_patch_pressure_mutliplier: 1.0 #2.0   # multiplier for patch pressure
+# Stiffness of finger orientation for virtual contacts
+d_ravin_finger_o_stiffness: 0.001
+# Allow to switch to task mode after grasp mode
+b_ravin_task_mode_allowed: true
+
+#(not used now)
+b_ravin_use_fake_mode_data: false # Use fake data for patches (from ravin)
+
+# d_temp_1: 0.10 # sinus amplitude
+# d_temp_2: 2.0 # sinus time period
+
+d_temp_1: 0.09 # sinus amplitude
+d_temp_2: 2.5 # sinus time period

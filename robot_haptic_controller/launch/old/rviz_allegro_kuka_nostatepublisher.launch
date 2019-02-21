@@ -1,0 +1,17 @@
+   
+<launch>
+  <!-- Run Rviz, no state publisher -->
+  <node name="rviz_allegro_kuka"
+    pkg="rviz" type="rviz"
+    args="-d $(find robot_haptic_controller)/config/allegro_kuka_new.rviz" >
+  </node>
+  <!-- old version:  -->
+      <!-- args="-d $(find robot_haptic_controller)/config/allegro_kuka.rviz" > -->
+
+  <!-- Publish model of the robot -->
+  <param name="/allegro_kuka/robot_description_stl_mesh_hand" command="$(find xacro)/xacro.py '$(find allegro_kuka_description)/models/allegro_hand_on_kuka_stl_mesh_hand.urdf.xacro'"/>
+
+
+
+
+</launch>

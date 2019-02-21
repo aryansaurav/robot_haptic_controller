@@ -1,0 +1,13 @@
+
+<launch>
+
+
+  <arg name="pkg" default="nope"/>
+  <arg name="type" default="nope"/>
+  <arg name="gdb_string" default="nope"/>
+
+  <node name="robot_program" required="true"  pkg="$(arg pkg)" type="$(arg type)" launch-prefix="xterm -geometry +0+1000 -hold -e $(arg gdb_string)" args="--config packages/robot_haptic_controller/RobotHapticController">
+  </node>
+
+
+</launch>

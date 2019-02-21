@@ -1,0 +1,105 @@
+
+### NOT SURE :::: #############
+
+# b_use_ravins_method_for_vc: false
+# b_pd_in_nullspace: true
+
+b_simulate_hand_only: true
+#test to have slow motion of the finger ...
+wn_joint_pos_hand_filter: 15.5 #2.0 #2.0 # this should be very fast now..
+
+
+# b_disable_index: true
+# b_disable_index: false
+b_enable_spmouse_buttons: false
+# Ravin's mode ...
+# b_use_ravins_method_for_vc: true
+# b_pd_in_nullspace: false #true # for continuous, it should be true.
+b_pd_in_nullspace: true #true # for continuous, it should be true.
+
+d_angle_sum_max_limit: 50.0 # Maximum sum of finger emg angles to trigger opening of the finger: larger values = easier opening
+
+d_ns_torques_multiplier: 0.3 # multiplier for PD torques when in NS
+d_grav_comp_multiplier: 1.1
+################################
+
+# Deactivate joint centering and auto orientation for debugging Qp
+b_auto_orientation: false
+b_use_joint_centering: true
+
+# ____ When working with the simulator ____
+# b_use_gazebo: false
+# b_use_yarp: false
+# b_display_time: true
+
+# _____ Default _____
+# Disable nullspace projection
+# b_no_projection: false
+# Process PD torques in the nullspace algo (instead of simply adding them)
+# This option is not compatible with ravin's mode...
+# b_pd_in_nullspace: false #true
+# b_pd_in_nullspace: true
+# Disable cart target filtering, it's unstable
+# b_use_filtered_cartesian_target: false 
+
+
+# _____ Generic _____
+# b_debug: true
+# b_control_real_robot: false
+# b_spacem_trackpoint: false
+b_avoid_joint_limits: true #
+
+# b_protect_undesired_contacts: false
+# Set orientation stiffness
+# d_impedance_lin_stiff: 20000.0  # 1000.0 # 300.0
+# d_impedance_lin_damp: 10000.0    # 50.0 # apparently 0.7 would be enough ?? I Don;t think so
+# d_impedance_rot_stiff: 5000.0   # 5.0
+# d_impedance_rot_damp: 2000.0   # 0.5 
+
+# Joint gains
+d_joint_position_kp: 0.05 # 0.6 #0.8 #0.6 # 0.2 very low
+d_joint_position_kd: 0.01 # 0.04 #0.04 #0.05 #0.1
+
+# b_use_virtual_contact_torques: false 
+
+# Arm gains: are those ok values ??? test in joint pd mode ...
+d_temp_5: 3.0 #10.0 #20# arm kp gain
+d_temp_6: 1.0 #0.1 #2.0  # arm kd gain
+
+# For joint PD control (to test simulation with real hand)
+# d_joint_position_kp: 1.0
+# d_joint_position_kd: 0.06
+
+
+# _____ Common to all launch files_____
+d_task_weight_vc: 10.0
+# d_task_weight_space_mouse: 3.0
+d_task_weight_space_mouse: 10.0
+d_task_weight_joint_centering: 10.0
+d_task_weight_joint_position: 10.0
+d_task_weight_joint_limit: 10.0 # useless for now
+
+d_min_jointlimit_distance_percent_arm: 20.0
+d_max_torque_arm_centering: 2.5
+
+# This may not be true for the simulation
+d_jsim_regularization: 0.00 # 0.0 # Regularize the JSIM for small inertia on the hand
+
+# Threshold to automatically switch to next keypoint frame
+d_target_reached_threshold: 0.02
+
+# Filter to reach desired planned pose
+# wn_joint_pos_hand_filter: 30.0
+# wn_joint_pos_hand_filter: 3.0 # why was it so fast ???
+
+# How much use normal information vs direction to closest contact
+# d_use_vc_normalinfo: 0.9
+
+# b_use_qp: false
+b_use_qp: true
+
+# b_no_thumb_from_opt: true #depends on hand used (disable thumb pos ...)
+b_no_thumb_from_opt: false #depends on hand used (disable thumb pos ...)
+# d_desired_normal_pressure: 0.4 #1.0
+
+d_touch_pressure_mult: 1.0

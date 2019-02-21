@@ -1,0 +1,68 @@
+<launch>
+
+        <!-- Remap output of exploration controller to be manager by another node, not directly the simulation -->
+<!--         <remap from="/lwr/input_torques" to="/compliant_exploration_torques"/>
+ -->
+
+<arg name="gdb"             default="false"/>
+<arg name="rviz_explo"             default="true"/>
+
+        <include file="$(find robot_haptic_controller)/launch/helper/run_with_params.launch" >
+
+            <!-- Run in debug mode  -->
+            <arg name="gdb"             default="$(arg gdb)"/>
+
+
+            <!-- Choose to run rviz only with hand or whole robot -->
+            <arg name="rviz_hand"       default="false"/>
+            <arg name="rviz_full"       default="false"/>
+            <arg name="rviz_explo"       default="$(arg rviz_explo)"/>
+
+
+            <!-- Run the state publisher (useful for saving in rosbags if rviz with state publisher is not run) -->
+            <arg name="state_pub"       default="false"/>
+
+            <!-- Run a terminal that displays the debug information sent through ros topics -->
+            <arg name="display_debug"   default="false"/>
+
+            <!-- Run epfl_right_torque, which allows to control the real allegro hand -->
+            <arg name="hand_controller" default="false"/>
+
+            <!-- Run the space mouse controller  -->
+            <arg name="space_mouse"     default="false"/>
+
+            <!-- Record a rosbag, specify the bag prefix too -->
+            <arg name="record_bag"      default="false"/>
+
+            <!-- Choose prefix to record the bag of data -->
+            <!-- <arg name="bag_prefix"              default="spheres"/> -->
+            <arg name="bag_prefix"              default="irobot_hand1"/>
+
+            <!-- Choose which yaml parameter file to load -->
+            <arg name="program_parameters"      default="param_gazebo_exploration_ressources.yaml"/>
+
+            <!-- Choose some finger rest positions (different for exploration and grasping) -->
+            <arg name="finger_positions"        default="finger_pos_default.yaml"/>
+
+            <!-- Choose which contact levels (useful for exploration too and choosing whether to use the thumb) -->
+            <arg name="contact_levels"          default="contact_level_thumb_last.yaml"/>
+
+            <!-- Choose list of keypoints to automatically explore objects -->
+            <arg name="keypoint"              default="irobot.yaml"/>
+            <!-- <arg name="keypoint"              default="mailbox.yaml"/> -->
+
+            <arg name="robot_simulator"     default="false"/>
+            <arg name="lwr_main"            default="false"/>
+            <arg name="lwr_main_no"         default="true"/>
+
+            <!-- Python Console -->
+            <arg name="python_console"      default="true"/>
+
+            <!-- Dynamic parameters display -->
+            <arg name="dyn_param"      default="false"/>
+
+            <!-- Run tactile particles filter -->
+            <arg name="pcl_filter"      default="false"/>
+
+        </include>
+</launch>

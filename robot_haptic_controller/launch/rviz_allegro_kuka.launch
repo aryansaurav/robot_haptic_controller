@@ -1,0 +1,18 @@
+   
+<launch>
+  <!-- Run Rviz with KUKA and AllegroHAND -->
+  <node name="rviz_allegro_kuka"
+    pkg="rviz" type="rviz"
+    args="-d $(find robot_haptic_controller)/config/allegro_kuka_new.rviz" >
+  </node>
+
+  <!-- Run state publisher -->
+  <node name="jointState2tf_allegro_kuka"
+    pkg="robot_state_publisher"
+    type="robot_state_publisher"> 
+    <remap from="robot_description" to="/allegro_kuka/robot_description" />
+    <!-- Depending on displaying the table or not -->
+    <remap from="/joint_states" to="/allegro_kuka/joint_states"/>
+  </node>
+
+</launch>

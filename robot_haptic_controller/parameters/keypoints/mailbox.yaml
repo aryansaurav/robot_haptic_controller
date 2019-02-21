@@ -1,0 +1,9 @@
+keypoints:
+  - [-0.55, +0.15, 0.2]
+  - [-0.55, -0.15, 0.2]
+  - [-0.45, -0.20, 0.2]
+  - [-0.40, -0.15, 0.2]
+  - [-0.40, +0.05, 0.2] # more or less the middle 
+  - [-0.45, +0.05, 0.3] # more or less the middle 
+  - [-0.55, +0.05, 0.25] # more or less the middle 
+

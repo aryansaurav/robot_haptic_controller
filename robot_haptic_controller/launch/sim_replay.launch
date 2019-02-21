@@ -1,0 +1,17 @@
+<launch>
+
+
+
+  <!-- Run the pcl_filter -->
+  <include  file="$(find haptic_pointcloud_processing)/launch/hpc.launch"/>
+
+<!-- just nostatepub -->
+  <include file="$(find robot_haptic_controller)/launch/old/rviz_allegro_kuka_nostatepublisher.launch"/>
+  <!-- test with full version -->
+
+    <!-- <include if="$(arg rviz_full)" file="$(find robot_haptic_controller)/launch/rviz_allegro_kuka.launch"/> -->
+
+roslaunch robot_haptic_controller rviz_allegro_kuka_nostatepublisher.launch 
+  
+
+</launch>

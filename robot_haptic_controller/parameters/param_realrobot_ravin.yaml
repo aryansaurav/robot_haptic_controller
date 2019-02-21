@@ -1,0 +1,128 @@
+---
+# Initial level of the contact levels when starting the program
+i_contact_level_init: 0
+# Display some debug information
+b_debug: false
+# Display timing information
+b_display_time: false
+# Disable nullspace projection
+b_no_projection: false
+
+#==== MAIN SWITCHES #====
+# Send commands to the real robot
+b_control_real_robot: true
+# Should try to connect to gazebo
+b_use_gazebo: false
+# Connect to yarp to get real tactile data
+b_use_yarp: true
+# Use of spacemouse: Either tracking a virtual point, or applying external torques
+b_spacem_trackpoint: true
+# For impedance control, determine the orientation automatically depending on contacts
+b_auto_orientation: false
+# Use virtual contacts, should be on unless debugging
+b_use_virtual_contact_torques: true 
+# Simulate some tekscan data.
+b_simulate_tekscan: false
+# For nullSpace Control, use only the hand or the whole arm
+b_handonly_nullspace: true
+# Add an inequality constraint for undesired contacts (only if hand_only is working)
+b_protect_undesired_contacts: true
+
+# Do the exploration in "pd" mode
+i_pd_grasp: 0
+# Velocity of fingers closing
+d_joint_close_velocity: 25 #deg /sec 
+
+###########################
+#        SECTIONS         #
+###########################
+
+#==== FILTERS #====
+# Robot position filter (necessary for basic smoothing)
+wn_position_filter: 200.0 #100.0 #30.0
+# Robot velocity filter
+wn_velocity_filter: 30.0
+# Filter for changing the average normal direction of contact
+wn_contact_normal_filter: 5.0
+# Filter for the maximum intensity of contact
+wn_max_intensity_filter: 5.0
+# Separate filters for hand and arm motion generators
+wn_joint_pos_arm_filter: 0.5 #0.3
+wn_joint_pos_hand_filter: 2.0
+# Filter for tracked cartesian position
+wn_cartesian_position_motion: 2.0
+wn_cartesian_orientation_motion: 2.0
+b_use_filtered_cartesian_target: true
+
+#==== VIRTUAL CONTACT #====
+# max distance between a virtual contact and its target
+d_vc_cart_max_gap: 0.05
+# KP for stiffness of virtual contacts (should only be used in hand_only mode ...) #300.0
+d_vc_cart_kp: 100.0  
+# Kd for virtual contacts impedance
+d_vc_cart_kd: 0.0  
+# desired velocity of the virtual contacts towards goal
+d_desired_virtual_normal_velocity: 5.0
+# For virtual contacts, use normal of closest contact, or direction towards it # CAREFUL, this makes the ravin stuff not working ...
+b_use_vc_normalinfo: false 
+# For virtual contacts, use Ravin's method (2 lists of patches, 1 principal patch)
+d_use_vc_normalinfo: 0.5 
+# For virtual contacts, use Ravin's method (2 lists of patches, 1 principal patch)
+b_use_ravins_method_for_vc: true
+# Use identity JSIM for null_space (overriden by dynamic parameters !!!)
+b_use_identity_JSIM: false
+# Add a task to center joint, this is crashing now, to debug ...
+b_use_joint_centering: false
+
+#==== PUBLICATIONS #====
+b_publish_virtual_contact_frames_markers: true
+
+
+#==== GAINS #====
+## AllegroHand
+b_use_predetermined_pd_gains: true
+
+#Mutlipliers for the gains of the hand
+d_hand_kp_multiplier: 1.0
+d_hand_kd_multiplier: 1.0
+
+## Whole arm
+# For joint PD control (whole arm)
+d_joint_position_kp: 1.0 # 0.6 #0.8 #0.6 # 0.2 very low
+d_joint_position_kd: 0.06 # 0.04 #0.04 #0.05 #0.1
+
+
+#==== IMPEDANCE CONTROL #====
+# joint damping coefficient added to the impendance control, NOT FUNCTIONNAL
+d_joint_damping_coefficient: 50.0
+
+## Eigher one or the other group is used depending on this: (false),   pb true is not working
+# Use isotropic impedance or it depends on the direction
+b_use_isotropic_impedance: true
+
+# (isotropic) Used to do "normal" impedance control
+d_impedance_lin_stiff: 500.0 # 300.0
+d_impedance_lin_damp: 40.0 # apparently 0.7 would be enough ?? I Don;t think so
+d_impedance_rot_stiff: 30.0 # 3.0
+d_impedance_rot_damp: 0.3
+
+
+#==== CONTACTS  #====
+# CONTACT CONTROL: default desired pressure (N)
+d_desired_normal_pressure: 2.0
+
+
+#==== TEMPORARY  #====
+# d_temp_1: 0.0
+# d_temp_2: 0.0
+d_temp_3: 0.01 # Offset for the tactile sensors on the fingers (z axis)
+d_temp_4: 15.0  # Threshold for tactile sensors
+d_temp_5: 0.0 # used in simulation
+d_temp_6: 0.0 # used in simulatino
+d_temp_8: 0.0 
+d_temp_9: 0.0 
+d_temp_10: 0.0 
+
+i_temp_1: 1
+i_temp_2: 1
+i_temp_3: 1

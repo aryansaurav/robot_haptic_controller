@@ -1,0 +1,40 @@
+<launch>
+	<arg name="gdb" default="false"/>
+
+	<!-- Load YAML parameters -->
+  <rosparam command="load" file="$(find robot_haptic_controller)/parameters/param_gazebo.yaml" />
+  <rosparam command="load" file="$(find robot_haptic_controller)/parameters/finger_pos/finger_pos_cup.yaml" />
+  <rosparam command="load" file="$(find robot_haptic_controller)/parameters/contact_levels/contact_level_thumb.yaml" />
+  <rosparam command="load" file="$(find robot_haptic_controller)/parameters/my_gains_pd.yaml" />
+  <rosparam command="load" file="$(find robot_haptic_controller)/parameters/ravin_params.yaml" />
+  
+  <rosparam command="load" file="$(find robot_haptic_controller)/parameters/temporary_parameters.yaml" />
+
+  <!-- Load the robot model-->
+  <include file="$(find allegro_kuka_gazebo)/launch/allegro_kuka_nogaz.launch"/>
+
+  <!-- Run visualization (Full robot) (no control)-->
+  <include file="$(find robot_haptic_controller)/launch/rviz_allegro_kuka.launch"/>
+
+  <!-- Run visualization (Hand only)-->
+  <!-- <include file="$(find allegro_hand_controllers)/launch/allegro_hand_nocontrol.launch"/> -->
+
+  <!-- Run the Hand controller -->
+  <!-- <include file="$(find epfl_allegro_launchers)/launch/epfl_right_torque.launch"/> -->
+
+  <!-- Run the space_mouse node-->
+  <node pkg="spacenav_node" type="spacenav_node" name="spacenav_node" output="screen"></node>
+
+  <!-- Run a rosbag to record what matters, splits after 250Mb... -->
+  <node pkg="rosbag" type="record" name="rosbag_record" output="screen" args="/rosout /tactile_pressures /info_for_ravin /pcl /allegro_kuka/joint_states /allegro_kuka/tf /visualization_marker /myPubDefault /Nicolas/array -o exploration_auto --split --size=250"></node>
+
+
+  <!-- Load RTK -->
+  <node if="$(arg gdb)" name="robot_simulator" pkg="robot_simulator" type="robot_simulator" launch-prefix="xterm -hold -e gdb -ex run --args" args="--config packages/robot_haptic_controller/RobotHapticController" />
+  <node unless="$(arg gdb)" name="robot_simulator" pkg="robot_simulator" type="robot_simulator" launch-prefix="xterm -hold -e" args="--config packages/robot_haptic_controller/RobotHapticController" required="true" />
+
+
+  <!-- OR Run robot state publisher (so that tfs are recorded) -->
+  <!-- <include file="$(find robot_haptic_controller)/launch/allegro_kuka_state_publisher.launch"/> -->
+
+</launch>

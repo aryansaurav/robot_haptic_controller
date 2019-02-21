@@ -1,0 +1,172 @@
+<launch>
+
+  <arg name="gdb"             default="false"/>
+  <arg name="program"         default="false"/>
+  <!-- must choose between rtk (robotsimulator), lwr_interface and no_interface -->
+
+  <!--  ==== Define which nodes/includes should be ran ==== -->
+  <arg name="rviz_hand"       default="false"/>
+  <!-- <arg name="rviz_full"       default="true"/> -->
+  <arg name="rviz_full"       default="false"/>
+  <!-- Rum the state publisher (useful for saving in rosbags if rviz with state publisher is not run) -->
+  <arg name="state_pub"       default="true"/>
+
+  <arg name="rviz_full_simple"       default="false"/>
+  
+  <!-- Run a terminal that displays the debug information sent through ros topics -->
+  <arg name="display_debug"   default="false"/>
+  <!-- Run epfl_right_torque, which allows to control the real allegro hand -->
+  <arg name="hand_controller" default="false"/>
+  <!-- Run the space mouse controller  -->
+  <arg name="space_mouse"     default="true"/>
+  <!-- Record a rosbag, specify the bag prefix too -->
+  <arg name="record_bag"      default="false"/>
+  <!-- Run the python console -->
+  <arg name="python_console"  default="false"/>
+  <!-- Run the dynamic parameters interface -->
+  <arg name="dyn_param"  default="false"/>
+  <!-- Run pointcloud filter -->
+  <arg name="pcl_filter"  default="false"/>
+
+  <!-- Choose which yaml parameter file to load -->
+  <arg name="program_parameters"      default="param_gazebo_cups.yaml"/>
+  <!-- Choose some finger rest positions (different for exploration and grasping) -->
+  <arg name="finger_positions"        default="finger_pos_cup.yaml"/>
+  <!-- Choose which contact levels (useful for exploration too and choosing whether to use the thumb) -->
+  <arg name="contact_levels"          default="contact_level_nothumb.yaml"/>
+  <!-- Choose which keypoints to load -->
+  <arg name="keypoint"          default="irobot.yaml"/>
+
+  <arg name="bag_prefix"      default="cups_rotated_noalg-cup6-NoAvoidUndes-LOWKP0.005"/>
+  <arg name="rviz_explo"      default="false"/>
+
+
+  <arg name="robot_simulator"     default="false"/>
+  <arg name="lwr_main"            default="false"/>
+  <arg name="lwr_main_no"         default="true"/>
+
+  <arg name="namespace"         default="nico_robot_control"/>
+
+  <!-- Should be renamed -->
+  <arg name="file"             default="allegro_hand_on_kuka"/>
+
+
+  <!-- ========== LOAD THE STUFF (be careful if modifying after here) ============ -->
+
+  <!-- Load YAML parameters -->
+  <rosparam command="load" ns="$(arg namespace)" file="$(find robot_haptic_controller)/parameters/$(arg program_parameters)" />
+  <rosparam command="load" ns="$(arg namespace)" file="$(find robot_haptic_controller)/parameters/finger_pos/$(arg finger_positions)" />
+  <rosparam command="load" ns="$(arg namespace)" file="$(find robot_haptic_controller)/parameters/contact_levels/$(arg contact_levels)" />
+  <rosparam command="load" ns="$(arg namespace)" file="$(find robot_haptic_controller)/parameters/keypoints/$(arg keypoint)" />
+
+  <!-- These are common to all my programs, there is no argument: -->
+  <rosparam command="load" ns="$(arg namespace)" file="$(find robot_haptic_controller)/parameters/my_gains_pd.yaml" />
+  <rosparam command="load" ns="$(arg namespace)" file="$(find robot_haptic_controller)/parameters/ravin_params.yaml" />
+  <rosparam command="load" ns="$(arg namespace)" file="$(find robot_haptic_controller)/parameters/temporary_parameters.yaml" />
+
+  <!-- =================== -->
+  <!-- Replace all these lines by an include common to all my launch files ? -->
+  <!-- =================== -->
+
+  <!-- Load the robot model-->
+  <include file="$(find allegro_kuka_gazebo)/launch/allegro_kuka_nogaz.launch">
+    <arg name="file"             default="$(arg file)"/>
+  </include>
+
+  <!-- Run visualization (Full robot)-->
+  <include if="$(arg rviz_full)" file="$(find robot_haptic_controller)/launch/rviz_allegro_kuka.launch"/>
+  <!-- Run rviz with simple visualization  -->
+<!--   <node if="$(arg rviz_full_simple)" name="rviz_allegro_kuka_simple" pkg="rviz" type="rviz"
+        args="-d $(find robot_haptic_controller)/config/allegro_kuka_simple_visu.rviz" >
+      </node> -->
+
+      <!-- Run visualization (Hand only)-->
+      <include if="$(arg rviz_hand)" file="$(find allegro_hand_controllers)/launch/allegro_hand_nocontrol.launch"/>
+
+      <node if="$(arg rviz_explo)" name="rviz"
+        pkg="rviz" type="rviz"
+        args="-d $(find exploration_ressources)/allegro_hand_config_exploration_ressources.rviz" 
+        respawn="false">
+      </node>
+      <!-- <include if="$(arg rviz_hand)" file="$(find allegro_hand_controllers)/launch/allegro_hand_nocontrol_explo.launch"/> -->
+
+      <!-- Run state publisher-->
+      <include if="$(arg state_pub)" file="$(find robot_haptic_controller)/launch/allegro_kuka_state_publisher.launch"/>
+
+
+      <!-- So much bad hacking. -->
+      <!-- <include file="$(find robot_haptic_controller)/launch/allegro_kuka_state_publisher_debug.launch"/> -->
+      <!-- <node pkg="tf" type="static_transform_publisher" name="world_debugworld_static" args="0 0 0 0 0 0 1 /world /debug/world 100" /> -->
+
+
+      <!-- Run the Hand controller -->
+      <include if="$(arg hand_controller)" file="$(find epfl_allegro_launchers)/launch/epfl_right_torque.launch">
+        <arg name="VISUALIZE" default="false"/>
+      </include>
+
+      <!-- Run the space_mouse -->
+      <node if="$(arg space_mouse)" pkg="spacenav_node" type="spacenav_node" name="spacenav_node" output="screen"></node>
+
+      <!-- Run the dyn_param -->
+      <node if="$(arg dyn_param)" pkg="rqt_reconfigure" type="rqt_reconfigure" name="rqt_reconfigure" output="screen"></node>
+
+      <!-- Run the pcl_filter -->
+      <include if="$(arg pcl_filter)" file="$(find haptic_pointcloud_processing)/launch/hpc.launch"/>
+
+      <!-- Run debug separately -->
+      <!-- <node if="$(arg display_debug)" pkg="rostopic" type="rostopic" name="debug_node" args="echo /Nicolas/debug" launch-prefix="xterm -hold -e"></node> -->
+      <!-- <node if="$(arg display_debug)" pkg="rostopic" type="rostopic" name="debug_node" args="echo /Nicolas/debug" launch-prefix="xterm -geometry 200x150+1700+100 -hold -e"></node> -->
+      <!-- <node if="$(arg display_debug)" pkg="rostopic" type="rostopic" name="debug_node" args="echo /Nicolas/debug" launch-prefix="xterm -geometry 100x40+700+100 -hold -e"></node> -->
+      <node if="$(arg display_debug)" pkg="rostopic" type="rostopic" name="debug_node" args="echo /Nicolas/debug" launch-prefix="xterm -geometry 100x30+0+0 -hold -e"></node>
+
+      <!-- Run a rosbag to record what matters, splits after 250Mb... -->
+      <!-- <node if="$(arg record_bag)" pkg="rosbag" type="record" name="rosbag_record" output="screen" args="/rosout /tactile_pressures /info_for_ravin /pcl /allegro_kuka/joint_states /allegro_kuka/tf /visualization_marker /myPubDefault /Nicolas/array /trajectory /mode /close /task_state /tighten -o $(arg bag_prefix)"></node> -->
+      <node if="$(arg record_bag)" pkg="rosbag" type="record" name="rosbag_record" output="screen" args="/rosout /tactile_pressures /pcl /allegro_kuka/joint_states /tf /visualization_marker /myPubDefault /Nicolas/array -o $(arg bag_prefix)"></node>
+
+      <param name="check_robot_sim" type="double" value="0.0" />
+      <param name="check_lwr_main" type="double" value="0.0" />
+      <param name="check_lwr_main_no" type="double" value="0.0" />
+
+
+      <!-- Choose the right string for gdb -->
+      <arg if="$(arg gdb)" name="gdb_string"             default="gdb -ex run --args"/>
+      <arg unless="$(arg gdb)" name="gdb_string"         default=""/>
+
+
+
+      <!-- Switch on the program that runs our module -->
+      <group if="$(arg robot_simulator)">
+        <include file="$(find robot_haptic_controller)/launch/helper/run_robot.launch">
+          <arg name="pkg"  default="robot_simulator"/>
+          <arg name="type"  default="robot_simulator"/>
+          <arg name="gdb_string" default="$(arg gdb_string)"/>
+        </include>
+      </group>
+
+
+      <group if="$(arg lwr_main)">
+        <include file="$(find robot_haptic_controller)/launch/helper/run_robot.launch">
+          <arg name="pkg"  default="lwr_interface"/>
+          <arg name="type"  default="lwr_main"/>
+          <arg name="gdb_string" default="$(arg gdb_string)"/>
+        </include>
+
+      </group>
+
+
+      <group if="$(arg lwr_main_no)">
+        <include file="$(find robot_haptic_controller)/launch/helper/run_robot.launch">
+          <arg name="pkg"  default="no_interface"/>
+          <arg name="type"  default="lwr_main_no"/>
+          <arg name="gdb_string" default="$(arg gdb_string)"/>
+        </include>
+      </group>
+
+
+      <!-- Run the python console -->
+      <!-- <node if="$(arg python_console)" pkg="rospyconsole" type="rospyconsole" name="rospyconsole" launch-prefix="xterm -geometry +1000+400 -hold -e"></node> -->
+      <!-- <node if="$(arg python_console)" pkg="rospyconsole" type="rospyconsole" name="rospyconsole" launch-prefix="xterm -geometry +1700+400 -hold -e"></node> -->
+      <node if="$(arg python_console)" pkg="rospyconsole" type="rospyconsole" name="rospyconsole" launch-prefix="xterm -geometry +0+500 -hold -e"></node>
+
+
+    </launch>

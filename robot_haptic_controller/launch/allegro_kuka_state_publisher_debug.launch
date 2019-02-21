@@ -1,0 +1,13 @@
+   
+<launch>
+<!-- Run state publisher ONLY-->
+
+   <node name="jointState2tf_allegro_kuka_debug"
+    pkg="robot_state_publisher"
+    type="robot_state_publisher"> 
+    <remap from="robot_description" to="/allegro_kuka/robot_description" />
+    <remap from="/joint_states" to="/allegro_kuka/joint_states_debug"/>
+    <param name="tf_prefix" value="debug" />
+  </node>
+
+</launch>

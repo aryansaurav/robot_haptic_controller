@@ -1,0 +1,6 @@
+- git: {local-name: robot-toolkit, uri: 'git@github.com:epfl-lasa/robot-toolkit.git'}
+- git: {local-name: my_msgs, uri: 'git@github.com:nisommer/my_msgs.git'}
+- git: {local-name: impedance_controller, uri: 'git@github.com:nisommer/impedance_controller.git'}
+- git: {local-name: tek_patch, uri: 'git@github.com:nisommer/tek_patch.git'}
+- git: {local-name: ope_space_controller, uri: 'git@github.com:nisommer/ope_space_controller.git'}
+- git: {local-name: motion_generators, uri: 'git@github.com:epfl-lasa/motion_generators.git'}
