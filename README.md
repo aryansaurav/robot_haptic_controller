@@ -8,14 +8,16 @@ https://www.nature.com/articles/s42256-019-0093-5
 
 
 
-My contribution to the project was to adapt this package to implement it on real robots (KUKA arm and Allegro hand). 
+This package was written by the second author. My contribution to the project was to adapt this package to implement it on real robots (KUKA arm and Allegro hand). 
 
 # Brief description of project:
-This is a project on shared control of prosthesis hand using muscle activity of handicapped subjects. Neureal networks were implement to decode EMG (electomyocardiogram) signals for inferring the intentions of subject. In conjunction with that, information from tacticle sensors placed on robotic hand was used to improve the grasp quality when controlling the robotic hand. The package here is only a controller of the robotic hand, which tries to increase the area of contact between the object and robotic fingers once user's intention to grasp is confirmed.
 
 Accompanying Youtube video:
 
 https://www.youtube.com/watch?v=YzddAsGUJ84
+
+This is a project on shared control of prosthesis hand using muscle activity of handicapped subjects. Neureal networks were implement to decode EMG (electomyocardiogram) signals for inferring the intentions of subject. In conjunction with that, information from tacticle sensors placed on robotic hand was used to improve the grasp quality when controlling the robotic hand. The package here is only a controller of the robotic hand, which tries to increase the area of contact between the object and robotic fingers once user's intention to grasp is confirmed.
+
 
 # Requirements
 
@@ -34,4 +36,11 @@ Pre-requisites for running on simulator:
 3. Models of the above robots (urdf files) - available on request
 
 # Commands for running
+
+real robot:
+roslaunch allegro_hand_gazebo allegro_hand_objects.launch
+
+simulation
+roslaunch robot_haptic_controller hand_only_demo_simulation_objects.launch
+
 
